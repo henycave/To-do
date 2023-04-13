@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:contained_tab_bar_view/contained_tab_bar_view.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:to_do_river/screens/add_task.dart';
 import '../components/task_card.dart';
 import '../model/task.dart';
 
@@ -14,11 +16,17 @@ class HomePage extends StatefulWidget {
 bool isTasksSelected = true;
 
 class _HomePageState extends State<HomePage> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: (){},
+        onPressed: (){
+          showModalBottomSheet(
+              context: context,
+              builder: (context) => AddTask()
+              );
+        },
         child: const Icon(Icons.add),
 
       ),
@@ -177,23 +185,41 @@ class _HomePageState extends State<HomePage> {
                                       child: const Text("Active"),
                                     ),
                                     MaterialButton(
-                                      color: const Color(0xff111C30),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(20),
+                                      onPressed: null,
+                                      child: const Text('Done', style: TextStyle(
+                                          color: Colors.blue
+                                      )
                                       ),
-                                      onPressed: () {},
-                                      child: const Text("Done", style: TextStyle(color: Colors.white),),
+                                      textColor: Colors.white,
+                                      shape: RoundedRectangleBorder(side: const BorderSide(
+                                          color: Colors.blue,
+                                          width: 1,
+                                          style: BorderStyle.solid
+                                      ), borderRadius: BorderRadius.circular(50)),
                                     )
+                                    // MaterialButton(
+                                    //   color: const Color(0xff111C30),
+                                    //   shape: RoundedRectangleBorder(
+                                    //     borderRadius: BorderRadius.circular(20),
+                                    //   ),
+                                    //   onPressed: () {},
+                                    //   child: const Text("Done", style: TextStyle(color: Colors.white),),
+                                    // )
                                   ],
                                 ),
                               ],
                             ),
                             Expanded(
-                                child: ListView.builder(
-                                  padding: const EdgeInsets.all(0).copyWith(top: 5),
-                                  itemCount: Task.tasks.length,
-                                  itemBuilder: (context, index) {
-                                    return TaskCard(task: Task.tasks[index]);
+                                child: Consumer(
+                                  builder: (BuildContext context, WidgetRef ref, Widget? child) {
+                                    final tasks = ref.watch(taskListProvider);
+                                    return ListView.builder(
+                                      padding: const EdgeInsets.all(0).copyWith(top: 5),
+                                      itemCount: tasks.length,
+                                      itemBuilder: (context, index) {
+                                        return TaskCard(task: tasks[index]);
+                                      },
+                                    );
                                   },
                                 )
                             )

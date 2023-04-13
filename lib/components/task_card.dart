@@ -22,7 +22,7 @@ class TaskCard extends StatelessWidget {
         ),
         //color: const Color(0xff9DECFF),
         child: Padding(
-          padding: const EdgeInsets.all(8.0).copyWith(bottom: 15),
+          padding: const EdgeInsets.all(15.0).copyWith(bottom: 15),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
