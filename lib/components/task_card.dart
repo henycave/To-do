@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:to_do_river/screens/task_detail.dart';
 import '../model/task.dart';
 
-class TaskCard extends StatelessWidget {
-  final Task task;
+class TaskCard extends ConsumerWidget {
+  final int taskIndex;
   const TaskCard({
-    required this.task,
+    required this.taskIndex,
     Key? key,
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final task = ref.watch(taskListProvider)[taskIndex];
     return GestureDetector(
       onTap: (){
-        Navigator.push(context, MaterialPageRoute(builder: (context)=>TaskDetail(task: task,)));
+        Navigator.push(context, MaterialPageRoute(builder: (context)=>TaskDetail(taskIndex: taskIndex,)));
       },
       child: Card(
         shape: RoundedRectangleBorder(
@@ -39,13 +41,13 @@ class TaskCard extends StatelessWidget {
                       const SizedBox(
                         width: 8,
                       ),
-                      const CircleAvatar(
+                      CircleAvatar(
                         radius: 25,
-                        child: Icon(
+                        child: const Icon(
                           Icons.check,
                           color: Colors.white,
                         ),
-                        backgroundColor: Color(0xff172741),
+                        backgroundColor: task.isDone? Colors.teal: const Color(0xff172741),
                       ),
                     ],
                   )
@@ -53,7 +55,7 @@ class TaskCard extends StatelessWidget {
               ),
               const SizedBox(height: 20,),
               Text(task.person),
-              Text(task.title, style: const TextStyle(fontSize: 25),),
+              Text(task.title, style: TextStyle(fontSize: 25, decoration: task.isDone? TextDecoration.lineThrough:null),),
             ],
           ),
         ),

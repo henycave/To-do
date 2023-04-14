@@ -18,6 +18,7 @@ class _AddTaskState extends ConsumerState<AddTask> {
   ];
   String person = "";
   String title = "";
+  String description = "";
   late DateTime pickedDate;
 
   selectDate(context) async {
@@ -51,6 +52,12 @@ class _AddTaskState extends ConsumerState<AddTask> {
             this.title = title;
           },
         ),
+        const Text("Task Description"),
+        TextField(
+          onChanged: (description) {
+            this.description = description;
+          },
+        ),
         MaterialButton(
           onPressed: (){
             Task task = Task(
@@ -58,6 +65,7 @@ class _AddTaskState extends ConsumerState<AddTask> {
               person: person,
               time: DateTime.now(),
               color: colors[index],
+              description: description,
             );
 
             List<Task> tasks = ref.read(taskListProvider);

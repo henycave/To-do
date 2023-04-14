@@ -217,7 +217,7 @@ class _HomePageState extends State<HomePage> {
                                       padding: const EdgeInsets.all(0).copyWith(top: 5),
                                       itemCount: tasks.length,
                                       itemBuilder: (context, index) {
-                                        return TaskCard(task: tasks[index]);
+                                        return TaskCard(taskIndex: index);
                                       },
                                     );
                                   },
