@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:action_slider/action_slider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import '../model/task.dart';
+import 'package:to_do_river/task/Application/task_services.dart';
+import 'package:to_do_river/task/Application/task_services.dart';
+import 'package:to_do_river/task/Domain/task.dart';
 
 class TaskDetail extends ConsumerStatefulWidget {
-  final int taskIndex;
+  final Task task;
 
-  const TaskDetail({Key? key, required this.taskIndex}) : super(key: key);
+  const TaskDetail({Key? key, required this.task}) : super(key: key);
 
   @override
   ConsumerState<TaskDetail> createState() => _TaskDetailState();
@@ -16,7 +18,8 @@ class TaskDetail extends ConsumerStatefulWidget {
 class _TaskDetailState extends ConsumerState<TaskDetail> {
   @override
   Widget build(BuildContext context) {
-    final Task task = ref.watch(taskListProvider)[widget.taskIndex];
+    Task task = widget.task;
+
     return Scaffold(
       body: Container(
         padding: const EdgeInsets.symmetric(horizontal: 25),
@@ -61,7 +64,10 @@ class _TaskDetailState extends ConsumerState<TaskDetail> {
               ),
               Text(
                 task.title,
-                style: TextStyle(fontSize: 80, decoration: task.isDone?TextDecoration.lineThrough: null),
+                style: TextStyle(
+                    fontSize: 80,
+                    decoration:
+                        task.isDone ? TextDecoration.lineThrough : null),
               ),
               const SizedBox(
                 height: 25,
@@ -152,13 +158,15 @@ class _TaskDetailState extends ConsumerState<TaskDetail> {
                           backgroundColor: const Color(0xff111C2F),
                           action: (controller) async {
                             controller.loading(); //starts loading animation
-                            List<Task> tasks = ref.read(taskListProvider);
-                            tasks[widget.taskIndex].isDone = true;
+                            //    List<Task> tasks = ref.read(taskListProvider);
+                            //  tasks[widget.taskIndex].isDone = true;
+
+                            ref.read(taskServiceProvider).updateTask(task);
                             await Future.delayed(const Duration(seconds: 2));
                             controller.success();
                             await Future.delayed(const Duration(seconds: 1));
-                            ref.read(taskListProvider.notifier).state = tasks.toList();
-                             //starts success animation
+                            // ref.read(taskListProvider.notifier).state = tasks.toList();
+                            //starts success animation
                           }),
                     )
             ],

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:to_do_river/task/Application/task_services.dart';
+import 'package:to_do_river/task/Application/task_services.dart';
+import 'package:to_do_river/task/Domain/task.dart';
 
-import '../model/task.dart';
 
 class AddTask extends ConsumerStatefulWidget {
   const AddTask({Key? key}) : super(key: key);
@@ -37,7 +39,7 @@ class _AddTaskState extends ConsumerState<AddTask> {
 
   @override
   Widget build(BuildContext context) {
-    int index = ref.read(colorIndexProvider);
+    int index = ref.watch(taskServiceProvider).colorIndex;
     return Column(
       children: [
         const Text("Person"),
@@ -59,7 +61,7 @@ class _AddTaskState extends ConsumerState<AddTask> {
           },
         ),
         MaterialButton(
-          onPressed: (){
+          onPressed: () async {
             Task task = Task(
               title: title,
               person: person,
@@ -68,17 +70,19 @@ class _AddTaskState extends ConsumerState<AddTask> {
               description: description,
             );
 
-            List<Task> tasks = ref.read(taskListProvider);
-            tasks.add(task);
-            ref.read(taskListProvider.notifier).state = tasks.toList();
+
+          await  ref.read(taskServiceProvider.notifier).addTask(task);
             if (index < 2) {
-              ref.read(colorIndexProvider.notifier).state++;
+              ref.read(taskServiceProvider).setColorIndex = index + 1;
             } else {
-              ref.read(colorIndexProvider.notifier).state = 0;
+               ref.read(taskServiceProvider).setColorIndex = 0;
             }
             Navigator.pop(context);
           },
-          child: const Text("Add Task"),
+          child:  ref.watch(taskServiceProvider).isLoading ?
+          CircularProgressIndicator.adaptive() :
+
+           Text("Add Task"),
         )
       ],
     );

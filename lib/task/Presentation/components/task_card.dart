@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:to_do_river/screens/task_detail.dart';
-import '../model/task.dart';
+import 'package:to_do_river/task/Domain/task.dart';
+import 'package:to_do_river/task/Presentation/task_detail.dart';
 
 class TaskCard extends ConsumerWidget {
-  final int taskIndex;
+  final Task task;
   const TaskCard({
-    required this.taskIndex,
+    required this.task,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final task = ref.watch(taskListProvider)[taskIndex];
     return GestureDetector(
       onTap: (){
-        Navigator.push(context, MaterialPageRoute(builder: (context)=>TaskDetail(taskIndex: taskIndex,)));
+        Navigator.push(context, MaterialPageRoute(builder: (context)=>TaskDetail(task: task,)));
       },
       child: Card(
         shape: RoundedRectangleBorder(
