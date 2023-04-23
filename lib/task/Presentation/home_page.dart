@@ -3,18 +3,20 @@ import 'package:contained_tab_bar_view/contained_tab_bar_view.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:to_do_river/task/Application/task_services.dart';
-import 'package:to_do_river/task/Application/task_services.dart';
 import 'package:to_do_river/task/Presentation/add_task.dart';
 import 'package:to_do_river/task/Presentation/components/task_card.dart';
 
 class HomePage extends ConsumerStatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
+
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _HomePageState();
 }
 
-bool isTasksSelected = true;
+//bool isTasksSelected = true;
 
 class _HomePageState extends ConsumerState<HomePage> {
+
   @override
   void initState() {
     
@@ -28,12 +30,11 @@ class _HomePageState extends ConsumerState<HomePage> {
   Widget build(BuildContext context) {
     final tasks = ref.watch(taskServiceProvider).tasks;
     final isLoading = ref.watch(taskServiceProvider).isLoading;
-
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           showModalBottomSheet(
-              context: context, builder: (context) => AddTask());
+              context: context, builder: (context) => const AddTask());
         },
         child: const Icon(Icons.add),
       ),
@@ -42,7 +43,7 @@ class _HomePageState extends ConsumerState<HomePage> {
         color: const Color(0xff111C30),
         child: Padding(
           padding:
-              const EdgeInsets.only(top: 45.0).copyWith(left: 20, right: 20),
+              EdgeInsets.only(top:MediaQuery.of(context).size.height*0.05).copyWith(left: MediaQuery.of(context).size.height*0.02, right: MediaQuery.of(context).size.height*0.02),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -78,18 +79,18 @@ class _HomePageState extends ConsumerState<HomePage> {
                   )
                 ],
               ),
-              const SizedBox(
-                height: 40,
+              SizedBox(
+                height: MediaQuery.of(context).size.height*0.04,
               ),
-              const Text(
+               Text(
                 "Good\nMorning",
                 style: TextStyle(
-                  color: Color(0xff5E8BFF),
-                  fontSize: 60,
+                  color: const Color(0xff5E8BFF),
+                  fontSize: MediaQuery.of(context).size.height*0.08,
                 ),
               ),
-              const SizedBox(
-                height: 20,
+              SizedBox(
+                height: MediaQuery.of(context).size.height*0.02,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -123,9 +124,6 @@ class _HomePageState extends ConsumerState<HomePage> {
               Expanded(
                 child: Container(
                   padding: const EdgeInsets.only(top: 8.0),
-                  //color: Colors.blue,
-                  //width: 200,
-                  //height: 300,
                   child: ContainedTabBarView(
                     tabs: [
                       Text(
@@ -143,7 +141,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                     ],
                     views: [
                       isLoading
-                          ? Center(child: CircularProgressIndicator.adaptive(backgroundColor: Colors.white,))
+                          ? const Center(child: CircularProgressIndicator.adaptive(backgroundColor: Colors.white,))
                           : Container(
                               padding: const EdgeInsets.only(top: 10),
                               child: Column(
@@ -213,33 +211,22 @@ class _HomePageState extends ConsumerState<HomePage> {
                                                 borderRadius:
                                                     BorderRadius.circular(50)),
                                           )
-                                          // MaterialButton(
-                                          //   color: const Color(0xff111C30),
-                                          //   shape: RoundedRectangleBorder(
-                                          //     borderRadius: BorderRadius.circular(20),
-                                          //   ),
-                                          //   onPressed: () {},
-                                          //   child: const Text("Done", style: TextStyle(color: Colors.white),),
-                                          // )
                                         ],
                                       ),
                                     ],
                                   ),
-                                  Expanded(child: Consumer(
-                                    builder: (BuildContext context,
-                                        WidgetRef ref, Widget? child) {
-                                      return ListView.builder(
-                                        padding: const EdgeInsets.all(0)
-                                            .copyWith(top: 5),
-                                        itemCount: tasks.length,
-                                        itemBuilder: (context, index) {
-                                          return TaskCard(
-                                            task: tasks[index],
-                                          );
-                                        },
-                                      );
-                                    },
-                                  ))
+                                  Expanded(
+                                    child: ListView.builder(
+                                      padding: const EdgeInsets.all(0)
+                                          .copyWith(top: 5),
+                                      itemCount: tasks.length,
+                                      itemBuilder: (context, index) {
+                                        return TaskCard(
+                                          task: tasks[index],
+                                        );
+                                      },
+                                    ),
+                                  )
                                 ],
                               ),
                             ),

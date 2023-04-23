@@ -10,4 +10,8 @@ class TaskRepository{
     /// It could be API
    return dummyTasks;
   }
+
+  Future<void> addTask() async{
+    await Future.delayed(const Duration(seconds: 1));
+  }
 }

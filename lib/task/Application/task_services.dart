@@ -8,30 +8,26 @@ final taskServiceProvider = ChangeNotifierProvider<TaskService>((ref) {
 });
 
 class TaskService extends ChangeNotifier {
-  TaskRepository _taskRepo = TaskRepository();
+  final TaskRepository _taskRepo = TaskRepository();
 
   List<Task> _tasks = [];
   int _colorIndex = 0;
+  bool _isLoading = false;
 
   int get colorIndex => _colorIndex;
-
   set setColorIndex(int index) {
     _colorIndex = index;
     notifyListeners();
   }
 
   List<Task> get tasks => _tasks;
-
   set setTasks(List<Task> tasks) {
     _tasks = tasks;
 
     notifyListeners();
   }
 
-  bool _isLoading = false;
-
   bool get isLoading => _isLoading;
-
   set setIsLoading(bool isLoading) {
     _isLoading = isLoading;
     notifyListeners();
@@ -42,7 +38,7 @@ class TaskService extends ChangeNotifier {
 
     final tasks = await _taskRepo.getTasks();
 
-    if (tasks != null) {
+    if (tasks.isNotEmpty) {
       setTasks = tasks;
     }
 
@@ -53,7 +49,7 @@ class TaskService extends ChangeNotifier {
   Future<void> addTask(Task task) async {
     setIsLoading = true;
 
-    await Future.delayed(Duration(seconds: 1));
+    await _taskRepo.addTask();
 
     /// send the new task to backend
 
@@ -70,7 +66,7 @@ class TaskService extends ChangeNotifier {
            isDone: true
        ) : t;
 
-       print(checkedTask.isDone.toString());
+       //print(checkedTask.isDone.toString());
 
        return checkedTask;
       }).toList();

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:to_do_river/task/Application/task_services.dart';
-import 'package:to_do_river/task/Application/task_services.dart';
 import 'package:to_do_river/task/Domain/task.dart';
 
 
@@ -21,21 +20,7 @@ class _AddTaskState extends ConsumerState<AddTask> {
   String person = "";
   String title = "";
   String description = "";
-  late DateTime pickedDate;
 
-  selectDate(context) async {
-    DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(), // Refer step 1
-      firstDate: DateTime.now(),
-      lastDate: DateTime(2025),
-    );
-    if (picked != null) {
-      setState(() {
-        pickedDate = picked;
-      });
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -80,9 +65,9 @@ class _AddTaskState extends ConsumerState<AddTask> {
             Navigator.pop(context);
           },
           child:  ref.watch(taskServiceProvider).isLoading ?
-          CircularProgressIndicator.adaptive() :
+          const CircularProgressIndicator.adaptive() :
 
-           Text("Add Task"),
+           const Text("Add Task"),
         )
       ],
     );

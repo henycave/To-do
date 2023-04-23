@@ -3,7 +3,6 @@ import 'package:action_slider/action_slider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:to_do_river/task/Application/task_services.dart';
-import 'package:to_do_river/task/Application/task_services.dart';
 import 'package:to_do_river/task/Domain/task.dart';
 
 class TaskDetail extends ConsumerStatefulWidget {
@@ -22,8 +21,8 @@ class _TaskDetailState extends ConsumerState<TaskDetail> {
 
     return Scaffold(
       body: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 25),
-        color: const Color(0xffFEF970),
+        padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.height*0.03).copyWith(top: 3),
+        color: task.color,
         child: SafeArea(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -43,8 +42,8 @@ class _TaskDetailState extends ConsumerState<TaskDetail> {
                   )
                 ],
               ),
-              const SizedBox(
-                height: 20,
+              SizedBox(
+                height: MediaQuery.of(context).size.height*0.02,
               ),
               OutlinedButton(
                 onPressed: null,
@@ -59,18 +58,18 @@ class _TaskDetailState extends ConsumerState<TaskDetail> {
                   style: TextStyle(color: Color(0xff343C13)),
                 ),
               ),
-              const SizedBox(
-                height: 20,
+              SizedBox(
+                height: MediaQuery.of(context).size.height*0.02,
               ),
               Text(
                 task.title,
                 style: TextStyle(
-                    fontSize: 80,
+                    fontSize: MediaQuery.of(context).size.height*0.08,
                     decoration:
                         task.isDone ? TextDecoration.lineThrough : null),
               ),
-              const SizedBox(
-                height: 25,
+              SizedBox(
+                height: MediaQuery.of(context).size.height*0.03,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -79,8 +78,8 @@ class _TaskDetailState extends ConsumerState<TaskDetail> {
                   Text("Assignee"),
                 ],
               ),
-              const SizedBox(
-                height: 15,
+              SizedBox(
+                height: MediaQuery.of(context).size.height*0.02,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -102,24 +101,24 @@ class _TaskDetailState extends ConsumerState<TaskDetail> {
                   ),
                 ],
               ),
-              const SizedBox(
-                height: 30,
+             SizedBox(
+                height: MediaQuery.of(context).size.height*0.04,
               ),
               const Text("Additional Description"),
-              const SizedBox(
-                height: 10,
+             SizedBox(
+                height: MediaQuery.of(context).size.height*0.02,
               ),
               Text(
                 task.description,
                 style:
                     const TextStyle(fontSize: 17, fontWeight: FontWeight.w400),
               ),
-              const SizedBox(
-                height: 30,
+              SizedBox(
+                height: MediaQuery.of(context).size.height*0.04,
               ),
               const Text("Created"),
-              const SizedBox(
-                height: 10,
+              SizedBox(
+                height: MediaQuery.of(context).size.height*0.015,
               ),
               Row(
                 children: [
@@ -137,15 +136,15 @@ class _TaskDetailState extends ConsumerState<TaskDetail> {
                   ),
                 ],
               ),
-              const SizedBox(
-                height: 60,
+              SizedBox(
+                height: MediaQuery.of(context).size.height*0.08,
               ),
               task.isDone
                   ? Container()
                   : Align(
                       alignment: Alignment.center,
                       child: ActionSlider.standard(
-                          height: 70,
+                          height: MediaQuery.of(context).size.height*0.1,
                           toggleColor: Colors.white,
                           icon: const Icon(Icons.check),
                           child: const Text(
@@ -161,7 +160,7 @@ class _TaskDetailState extends ConsumerState<TaskDetail> {
                             //    List<Task> tasks = ref.read(taskListProvider);
                             //  tasks[widget.taskIndex].isDone = true;
 
-                            ref.read(taskServiceProvider).updateTask(task);
+                            ref.read(taskServiceProvider.notifier).updateTask(task);
                             await Future.delayed(const Duration(seconds: 2));
                             controller.success();
                             await Future.delayed(const Duration(seconds: 1));
