@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:to_do_river/Application/auth_services.dart';
 import 'package:to_do_river/auth/Presentation/home.dart';
 
+import '../Application/auth_services.dart';
 import '../Domain/person.dart';
 
 class SignInWithEmail extends ConsumerStatefulWidget {
