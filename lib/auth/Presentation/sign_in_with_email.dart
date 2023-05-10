@@ -70,12 +70,15 @@ class _SignInWithEmailState extends ConsumerState<SignInWithEmail> {
                 height: MediaQuery.of(context).size.height * 0.03,
               ),
               MaterialButton(
-                onPressed: () {
+                onPressed: () async{
                   Person person = Person(email: email, password: password);
                   ref.read(authServiceProvider.notifier).setIsLoading = true;
-                  ref.read(authServiceProvider.notifier).createUser(person);
+                  await ref.read(authServiceProvider.notifier).createUser(person);
                   ref.read(authServiceProvider.notifier).setIsLoading = false;
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>const Home()));
+                  if(mounted) {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => const Home()));
+                  }
                 },
                 color: const Color(0xff6C63FF),
                 elevation: 10,

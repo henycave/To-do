@@ -46,7 +46,7 @@ class AuthServiceProvider extends ChangeNotifier {
     if (user == null) {
       return;
     } else {
-      _userCredential  = user;
+      setUserCredential  = user;
     }
     setIsLoading = false;
     notifyListeners();

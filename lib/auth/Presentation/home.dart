@@ -11,12 +11,15 @@ class Home extends ConsumerStatefulWidget {
 }
 
 class _HomeState extends ConsumerState<Home> {
+  String? name;
+
   @override
   Widget build(BuildContext context) {
+    name = ref.read(authServiceProvider).userCredential.user!.email;
     return Scaffold(
       body: Center(
         child: Text(
-          ref.watch(authServiceProvider).userCredential.user.email
+          name!
         ),
       ),
     );
